@@ -23,13 +23,13 @@ class SpikesCap(Capability):
         """ Returns true if node is type Ensemble or Neurons.
         """
         return issubclass(obj.__class__, (nengo.Ensemble,
-                                          nengo.nonlinearities.Neurons))
+                                          nengo.objects.Neurons))
 
     def get_out_dimensions(self, obj):
         """ Returns number of dimensions of node.
         """
         if (issubclass(obj.__class__, (nengo.Ensemble,
-                                       nengo.nonlinearities.Neurons))):
+                                       nengo.objects.Neurons))):
             return obj.n_neurons
         else:
             raise ValueError("output_cap does not support given object")
@@ -44,10 +44,10 @@ class SpikesCap(Capability):
         """
         #probe = nengo.Probe(obj, "spikes")
         if (issubclass(obj.__class__, nengo.Ensemble)):
-            nengo.Connection(obj.neurons, node, filter=None,
+            nengo.Connection(obj.neurons, node, synapse=None,
                              transform=np.eye(obj.n_neurons))
-        elif (issubclass(obj.__class__, nengo.nonlinearities.Neurons)):
-            nengo.Connection(obj, node, filter=None,
+        elif (issubclass(obj.__class__, nengo.objects.Neurons)):
+            nengo.Connection(obj, node, synapse=None,
                              transform=np.eye(obj.n_neurons))
         else:
             raise ValueError("output_cap does not support given object")

@@ -24,7 +24,7 @@ class OutputCap(Capability):
         """ Returns true if node is type Ensemble or Neurons.
         """
         return issubclass(obj.__class__, (nengo.Node, nengo.Ensemble,
-                                          nengo.nonlinearities.Neurons))
+                                          nengo.objects.Neurons))
 
     def get_out_dimensions(self, obj):
         """ Returns number of dimensions of node.
@@ -33,7 +33,7 @@ class OutputCap(Capability):
             return obj.size_out
         elif (issubclass(obj.__class__, nengo.Ensemble)):
             return obj.dimensions
-        elif (issubclass(obj.__class__, nengo.nonlinearities.Neurons)):
+        elif (issubclass(obj.__class__, nengo.objects.Neurons)):
             return obj.n_neurons
         else:
             raise ValueError("output_cap does not support given object")
@@ -45,9 +45,9 @@ class OutputCap(Capability):
         TODO - specify filters
         """
         if (issubclass(obj.__class__, nengo.Node)):
-            nengo.Connection(obj, node, filter=None)
+            nengo.Connection(obj, node, synapse=None)
         elif (issubclass(obj.__class__, (nengo.Ensemble,
-                                         nengo.nonlinearities.Neurons))):
-            nengo.Connection(obj, node, filter=0.005)
+                                         nengo.objects.Neurons))):
+            nengo.Connection(obj, node, synapse=0.005)
         else:
             raise ValueError("output_cap does not support given object")

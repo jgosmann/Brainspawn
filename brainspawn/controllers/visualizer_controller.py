@@ -206,7 +206,8 @@ class VisualizerController(object):
                 self._has_network = True
                 self.main_frame.controller_panel.enable_controls()
         except (AttributeError, ImportError, IOError, SyntaxError) as e:
-            print e
+            import traceback
+            traceback.print_exc()
             self.show_err_dialog("Error loading model",
                                  "Could not load model from " + str(filename))
 
@@ -274,7 +275,7 @@ class VisualizerController(object):
             self.main_frame.reset_button(None)  # a little hacky, but hey
         self.model = model
 
-        for nengo_obj in model.objs:
+        for nengo_obj in model.ensembles + model.nodes + model.connections + model.networks:
             self.set_nengo_obj_id(nengo_obj)
 
         self.main_frame.window.set_title("Nengo Visualizer - " + model.label)

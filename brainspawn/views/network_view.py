@@ -122,7 +122,7 @@ class NetworkView(CanvasItem):
             return
 
         # Add ensembles and nodes
-        for obj in model.objs:
+        for obj in model.ensembles + model.nodes + model.networks:
             name = None
             if isinstance(obj, nengo.Ensemble):
                 name = _find_uniq_name(obj.label, self.G.nodes())
